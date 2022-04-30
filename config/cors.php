@@ -21,7 +21,8 @@ return [
 
     'allowed_methods' => ['*'],
 
-    'allowed_origins' => [config('app.dev')?'*':env('API_URL'), env('APP_URL')],
+//    'allowed_origins' => [config('app.dev')?'*':env('API_URL'), env('APP_URL')],
+    'allowed_origins' => ['*'],
 
     'allowed_origins_patterns' => [],
 

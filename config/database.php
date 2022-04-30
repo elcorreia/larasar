@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Support\Str;
-$dev = config('app.dev');
 
 return [
 
@@ -47,11 +46,11 @@ return [
         'mysql' => [
             'driver' => 'mysql',
             'url' => env('DATABASE_URL'),
-            'host' => !$dev?env('DB_HOST'):env('DB_HOST_DEV'),
+            'host' => env('DB_HOST'),
             'port' => env('DB_PORT', '3306'),
-            'database' => !$dev?env('DB_DATABASE'):env('DB_DATABASE_DEV'),
-            'username' => !$dev?env('DB_USERNAME'):env('DB_USERNAME_DEV'),
-            'password' => !$dev?env('DB_PASSWORD'):'',
+            'database' => env('DB_DATABASE'),
+            'username' => env('DB_USERNAME'),
+            'password' => env('DB_PASSWORD'),
             'unix_socket' => env('DB_SOCKET', ''),
             'charset' => 'utf8mb4',
             'collation' => 'utf8mb4_unicode_ci',

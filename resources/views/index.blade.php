@@ -10,7 +10,8 @@
   // require base_path('dist/pwa/index.html')
   // require base_path('dist/spa/index.html')
   // require public_path('index.html')
-  require public_path('quasar/index.html')
+  //require public_path('quasar/index.html')
+//  require public_path('../src/index.template.html')
 @endphp
 {{-- Global configuration object --}}
 {{-- window.config = @json($config --}}

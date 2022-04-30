@@ -78,12 +78,14 @@ module.exports = configure(function (ctx) {
       // https://www.npmjs.com/package/dotenv
       env: env,
       distDir: 'public/quasar', // Comment for dist folder
-      publicPath: localProdServer ? '/www/larasar/public' : '/', // Build URL
+      // publicPath: localProdServer ? '/www/larasar/public' : '/', // Build URL
+      publicPath: localProdServer ? 'public' : '/', // Build URL
 
       // https://quasar.dev/quasar-cli/handling-webpack#introduction
       extendWebpack (cfg) {
         if (ctx.prod) {
-          cfg.output.publicPath = localProdServer ? '/www/larasar/public/quasar/' : '/quasar/'
+          // cfg.output.publicPath = localProdServer ? '/www/larasar/public/quasar/' : '/quasar/'
+          cfg.output.publicPath = localProdServer ? '/public/quasar/' : '/quasar/'
         } // Build Path
       }
     },
