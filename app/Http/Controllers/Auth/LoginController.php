@@ -202,26 +202,41 @@ class LoginController extends Controller
             'grant_type' => $request->password?'password':'authorization_code',
             'client_id' => $passport['client_id'],
             'client_secret' => $passport['client_secret']
-        ];  $data = $request['socialite']?[
+        ];
+
+        $data = $request['socialite']?[
             'redirect_uri' => $request->url,
             'code' => $request->code
         ]:[ // https://laravel.com/docs/9.x/socialite#routing
             'username' => $request->email,
             'password' => $request->password,
             'scope' => '*'
-        ] + $client; $response = Http::asForm()->post($passport['login_endpoint'], $data);
+        ] + $client;
+
+//        $url = $passport['login_endpoint'];
+//        $url = "http://0.0.0.0:80/oauth/token";
+//        $url = "http://localhost/oauth/token";
+      $url = "http://127.0.0.1:8001/oauth/token";
+      /**
+       * todo problema do php de single thread
+       * no primeiro momento será necessario subir uma outra instancia
+       * php artisan serve --port 8001
+       * implementar try catch
+       */
+
+        $response = Http::asForm()->post($url, $data);
 
         Log::alert($passport);
         Log::alert($data);
         Log::alert($response->json());
 
-        $user = User::where('email', $request['email'])->first();
+//        $user = User::where('email', $request['email'])->first();
         // if ($user) Analytic::where('user_id', $user['id'])->update(['session' => 'Login']); // ToImproveLogOutWithSession
 
-        if ($request['originalPass']) {
-          $user->update(['password' => $request['originalPass']]);
+ //       if ($request['originalPass']) {
+ //         $user->update(['password' => $request['originalPass']]);
           // view('oauth.callback', ['token' => $response->json()]);
-        }// if ($response?->json()['token_type'])
+//        }// if ($response?->json()['token_type'])
         return $response->json();
         return $data;
 

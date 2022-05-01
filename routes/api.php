@@ -7,7 +7,7 @@ use App\Http\Controllers\Auth\NotificationController;
 use App\Http\Controllers\Auth\BroadcastController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\LoginController;
-use App\Http\Controllers\CategoryController;
+//use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\PageController;
@@ -25,9 +25,9 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::get('/test', function () {
-  return env('SANCTUM_API').' - '.config('sanctumApi');
-});
+//Route::get('/test', function () {
+//  return env('SANCTUM_API').' - '.config('sanctumApi');
+//});
 
 Route::post('/tokens/create', function (Request $request) {
   // return 'jjjj';
@@ -41,7 +41,7 @@ Route::apiResources([
   'users' => UserController::class,
   'pages' => PageController::class,
   'messages' => MessageController::class,
-  'categories' => CategoryController::class,
+//  'categories' => CategoryController::class,
   'notifications' => NotificationController::class, // Notifications
   // 'subscriptions' => PushSubscriptionController::class // Push Subscriptions
 ]);

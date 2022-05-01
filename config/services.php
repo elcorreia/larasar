@@ -30,7 +30,9 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
     'passport' => [
-      'login_endpoint' => $app->runningInConsole() ? config('app.url') : url('/').'/oauth/token',
+//      'login_endpoint' => $app->runningInConsole() ? config('app.url') : url('/').'/oauth/token',
+//      'login_endpoint' => config('app.url') .'oauth/token',
+      'login_endpoint' => '127.0.0.1/oauth/token',
       'client_id' => env('PASSPORT_GRANT_CLIENT_ID'),
       'client_secret' => env('PASSPORT_GRANT_CLIENT_SECRET'),
     ],

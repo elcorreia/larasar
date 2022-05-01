@@ -42,7 +42,7 @@ return [
         ],
 
         'api' => [
-            'driver' => config('sanctumApi')?'token':'passport',
+            'driver' => 'passport',// config('sanctumApi')?'token':'passport',
             'provider' => 'users',
             'hash' => false,
         ],
