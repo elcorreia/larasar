@@ -2,6 +2,7 @@
 /public/hot
 /public/quasar
 /public/storage
+storage
 /storage/*.key
 /vendor
 .env
