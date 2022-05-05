@@ -100,7 +100,20 @@ module.exports = configure(function (ctx) {
 
     // https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-framework
     framework: {
-      config: {},
+      config: {
+        brand: {
+          primary: '#228b22',
+          secondary: '#b790f5',
+          accent: '#9C27B0',
+
+          dark: '#1d1d1d',
+
+          positive: '#74c286',
+          negative: '#bf4553',
+          info: '#73dbf0',
+          warning: '#ebc660'
+        }
+      },
 
       // For special cases outside of where the auto-import stategy can have an impact
       // (like functional components as one of the examples),

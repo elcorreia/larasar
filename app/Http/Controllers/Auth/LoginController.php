@@ -226,9 +226,12 @@ class LoginController extends Controller
 
         $response = Http::asForm()->post($url, $data);
 
-        Log::alert($passport);
-        Log::alert($data);
-        Log::alert($response->json());
+
+
+
+//        Log::alert($passport);
+//        Log::alert($data);
+//        Log::alert($response->json());
 
 //        $user = User::where('email', $request['email'])->first();
         // if ($user) Analytic::where('user_id', $user['id'])->update(['session' => 'Login']); // ToImproveLogOutWithSession
@@ -237,8 +240,9 @@ class LoginController extends Controller
  //         $user->update(['password' => $request['originalPass']]);
           // view('oauth.callback', ['token' => $response->json()]);
 //        }// if ($response?->json()['token_type'])
-        return $response->json();
-        return $data;
+//        return    $response->json();
+
+      return response()->json($response->json(), $response->status());
 
       // } catch (\Throwable $th) {}
 

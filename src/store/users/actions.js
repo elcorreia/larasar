@@ -10,6 +10,17 @@ export function loginAction ({ commit }, payload) {
   })
 }
 
+export function emailAction (payload) {
+  const url = 'api/password/email'
+  return api.post(url, payload);
+
+  //   .then(token => {
+  //   if (SANCTUM_API) token.data = { access_token: 'token', expires_in: 365 }
+  //   commit('loginMutation', { ...token.data, ...payload })
+  //     .then(() => dispatch('authAction'))
+  // })
+}
+
 export function registerAction ({ dispatch }, payload) {
   const url = payload.api === 'register' ? 'api/register' : 'api/users'
   return api.post(url, payload).then(response => {

@@ -67,7 +67,7 @@ Route::middleware(['guest:api'])->group(function () {
     Route::post('login', [LoginController::class, 'loginApi']);
     Route::post('register', [RegisterController::class, 'register']);
 
-    // Route::post('password/email', [ForgotPasswordController::class, 'sendResetLinkEmail']);
+     Route::post('password/email', [\App\Http\Controllers\Auth\ForgotPasswordController::class, 'sendResetLinkEmail']);
     // Route::post('password/reset', [ResetPasswordController::class, 'reset'])->name('password.reset');
 
     Route::post('login/{driver}', [LoginController::class, 'redirect']);

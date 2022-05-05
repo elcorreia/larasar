@@ -39,13 +39,14 @@ const routes = [
         meta: { public: true }
       },
       // Guest Routes
-      {
+/**      {
         path: 'login',
         name: 'guest.login',
         component: () => import('components/Auth'),
         // component: () => import('pages/auth/login.vue'),
         meta: { guest: true }
       },
+ **/
       {
         path: 'register',
         name: 'guest.register',
@@ -181,6 +182,43 @@ const routes = [
         // component: () => import('pages/auth/verify.vue'),
         meta: { verify: true }
       }
+    ]
+  },
+
+  /**
+   * Novas rotas
+   */
+
+  {
+    path: '/login',
+    component: () => import('layouts/LoggedOutLayout.vue'),
+    children: [
+      // {
+      //   path: '',
+      //   name: 'index',
+      //   component: () => import('pages/Index.vue'),
+      //   meta: { public: true }
+      // },
+
+      {
+        path: '',
+        name: 'guest.login',
+        component: () => import('pages/auth/login'),
+        meta: { guest: true }
+      },
+      {
+        path: '/reset',
+        name: 'guest.reset',
+        component: () => import('pages/auth/email'),
+        meta: { guest: true }
+      },
+
+      // {
+      //   path: 'login',
+      //   name: 'guest.login',
+      //   component: () => import('pages/auth/login'),
+      //   meta: { guest: true }
+      // },
     ]
   },
 
