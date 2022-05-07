@@ -1,48 +1,77 @@
 <template>
 
-    <q-page class="q-pa-md">
+  <q-page class="q-pa-md">
 
-      <q-form class="q-gutter-md">
-        <div class="row flex justify-center">
+    <q-form v-show="form.showForm" class="q-gutter-md">
+      <div class="row flex justify-center">
 
-          <div class="col-md-6 q-pa-md">
+        <div class="col-md-6 q-pa-md">
 
-            <q-card class="my-card text-white">
-              <q-card-section class="bg-primary">
-                <div class="text-h6">{{$t('reset_password')}}</div>
-              </q-card-section>
+          <q-card class="my-card text-white">
+            <q-card-section class="bg-primary">
+              <div class="text-h6">{{ $t('reset_password') }}</div>
+            </q-card-section>
 
-              <div class="q-pa-md">
-                <q-input
-                  v-model="form.email"
-                  filled
-                  type="email"
-                  :label="$t('email')"
-                  :hint="form.email_data"
-                  lazy-rules
-                  :rules="[val => val && val.length > 0 || '*']"
-                  :error="form.email_data ? true : false"
-                  :error-message='form.email_data'
-                />
+            <div class="q-pa-md">
+              <q-input
+                v-model="form.email"
+                :error="!!form.email_data"
+                :error-message='form.email_data'
+                :hint="form.email_data"
+                :label="$t('email')"
+                :rules="[val => val && val.length > 0 || '*']"
+                filled
+                lazy-rules
+                type="email"
+              />
 
-                <q-btn
-                  color="primary"
-                  icon="fas fa-link"
-                  :loading="form.loader"
-                  :label="$t('send_password_reset_link')"
-                  class="q-ma-sm" @click.prevent="send"
-                />
+              <q-btn
+                :label="$t('send_password_reset_link')"
+                :loading="form.loader"
+                class="q-ma-sm"
+                color="primary"
+                icon="fas fa-link" @click.prevent="send"
+              />
 
-              </div>
+            </div>
 
-            </q-card>
-
-          </div>
+          </q-card>
 
         </div>
-      </q-form>
 
-    </q-page>
+      </div>
+    </q-form>
+
+    <div v-show="!form.showForm" class="row flex justify-center">
+      <div class="col-md-6 q-pa-md">
+        <q-card class="my-card">
+          <q-card-section class="bg-primary">
+            <div class="text-h6 text-white">{{ $t('reset_password') }}</div>
+          </q-card-section>
+
+          <q-card-section>
+            <div class="">
+                {{ $t('reset_password_text_success') }}
+            </div>
+          </q-card-section>
+
+          <q-separator/>
+          <q-card-actions>
+            <q-btn
+
+              :label="$t('go_home')"
+              class="q-ma-sm"
+              color="primary"
+              to="/login"
+            />
+          </q-card-actions>
+
+        </q-card>
+      </div>
+    </div>
+
+
+  </q-page>
 
 </template>
 
@@ -59,26 +88,32 @@ export default {
 
     const form = reactive({
       loader: false,
+      showForm: true,
       email: '',
       email_data: ''
     });
 
     return {
       form,
-      send () {
+      send() {
         form.loader = true
 
         $store.dispatch('users/emailAction', {
           email: form.email
         })
           .then(rep => {
-            form.loader = false
+
             $q.notify({
               color: 'positive',
-              position: 'bottom-left',
-              message: rep.data.status,
+              position: 'top',
+              message: rep.data.message,
               icon: 'check'
             })
+
+            form.showForm = false
+            form.loader = false
+
+
           })
           .catch(error => {
 
@@ -97,7 +132,7 @@ export default {
       }
     }
   },
-  data () {
+  data() {
     return {
       loader: false,
       email: '',

@@ -84,5 +84,6 @@
   "verify_email_address": "Enviamos um e-mail com o link de verificação.",
   "View All": "View All",
   "favorites": "Favorites",
-  "Filter": "Filter"
+  "Filter": "Filter",
+  "reset_password_text_success" : "Email enviado com sucesso. Por favor, verifique sua caixa de entrada"
 }

@@ -10,7 +10,7 @@ export function loginAction ({ commit }, payload) {
   })
 }
 
-export function emailAction (payload) {
+export function emailAction ({},payload) {
   const url = 'api/password/email'
   return api.post(url, payload);
 

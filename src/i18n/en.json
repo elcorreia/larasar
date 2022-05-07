@@ -166,5 +166,6 @@
   "You don't have any unread notifications.": "You don't have any unread notifications.",
   "Your location is": "Your location is",
   "your_info": "Your Info",
-  "your_password": "Your Password"
+  "your_password": "Your Password",
+  "reset_password_text_success" : "Email enviado com sucesso. Por favor, verifique sua caixa de entrada"
 }
