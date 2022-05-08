@@ -14,4 +14,6 @@ return [
 
     'failed'   => 'Credenciais informadas não correspondem com nossos registros.',
     'throttle' => 'Você realizou muitas tentativas de login. Por favor, tente novamente em :seconds segundos.',
+    'user_not_found' => 'Usuário não encontrado',
+    'email_syccessfully' => 'Email enviado com sucesso',
 ];

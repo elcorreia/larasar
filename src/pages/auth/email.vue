@@ -96,7 +96,7 @@ export default {
     const form = reactive({
       loader: false,
       showForm: true,
-      email: 'elcorreia17@gmail132.com',
+      email: 'elcorreia17@gmail.com',
       email_data: ''
     });
 

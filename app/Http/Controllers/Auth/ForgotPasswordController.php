@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Actions\Fortify\ResetUserPassword;
 use App\Exceptions\NotFoundException;
+use App\Mail\ResetPasswordMail;
 use App\Models\User;
 use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Mail;
 
 class ForgotPasswordController extends Controller
 {
@@ -39,10 +42,12 @@ class ForgotPasswordController extends Controller
         $user =  User::whereEmail($request->email)->first();
 
         if(!$user){
-          throw new NotFoundException('Usuario não encontrado');
+          throw new NotFoundException(trans('auth.user_not_found'));
         }
 
-        return response()->json(['message' => 'email enviado com sucesso']);
+        Mail::to($user)->send(new ResetPasswordMail);
+
+        return response()->json(['message' => trans('auth.email_syccessfully')]);
     }
 
     /**
