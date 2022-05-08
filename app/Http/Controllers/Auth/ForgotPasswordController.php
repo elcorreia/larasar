@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Exceptions\NotFoundException;
+use App\Models\User;
+use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -31,7 +34,14 @@ class ForgotPasswordController extends Controller
     }
 
     public function sendResetLinkEmail(Request $request){
+
         $this->validateEmail($request);
+        $user =  User::whereEmail($request->email)->first();
+
+        if(!$user){
+          throw new NotFoundException('Usuario não encontrado');
+        }
+
         return response()->json(['message' => 'email enviado com sucesso']);
     }
 

@@ -32,6 +32,13 @@
                 color="primary"
                 icon="fas fa-link" @click.prevent="send"
               />
+              <q-btn
+                flat
+                :label="$t('go_home')"
+                class="q-ma-sm"
+                color="primary"
+                to="/login"
+              />
 
             </div>
 
@@ -89,7 +96,7 @@ export default {
     const form = reactive({
       loader: false,
       showForm: true,
-      email: '',
+      email: 'elcorreia17@gmail132.com',
       email_data: ''
     });
 
@@ -117,17 +124,19 @@ export default {
           })
           .catch(error => {
 
+            const mainMessage = error.response.data?.message ?? error.response.data?.errors?.email[0];
+
             $q.notify({
               color: 'negative',
               // positive, warning, info
               position: 'top-right',
-              message: error.response.data.errors.email[0],
+              message: mainMessage,
               icon: 'announcement'
             })
 
             form.loader = false
-            console.log(error.response.data.errors.email[0])
-            form.email_data = error.response.data.errors.email[0]
+            console.log(error.response.data?.errors?.email[0])
+            form.email_data = error.response.data?.errors?.email[0]
           })
       }
     }
