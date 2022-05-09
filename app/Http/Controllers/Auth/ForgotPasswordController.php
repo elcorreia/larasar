@@ -2,87 +2,57 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Actions\Fortify\ResetUserPassword;
 use App\Exceptions\NotFoundException;
-use App\Mail\ResetPasswordMail;
-use App\Models\User;
-use Illuminate\Auth\Notifications\VerifyEmail;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Mail;
+use App\Models\User;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
+use Laravel\Fortify\Http\Controllers\PasswordResetLinkController;
+use \Illuminate\Support\Facades\Validator;
 
 class ForgotPasswordController extends Controller
 {
-    /*
-    |--------------------------------------------------------------------------
-    | Password Reset Controller
-    |--------------------------------------------------------------------------
-    |
-    | This controller is responsible for handling password reset emails and
-    | includes a trait which assists in sending these notifications from
-    | your application to your users. Feel free to explore this trait.
-    |
-    */
 
-//    use SendsPasswordResetEmails;
-
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
     public function __construct()
     {
         $this->middleware('guest');
     }
 
-    public function sendResetLinkEmail(Request $request){
+    /**
+     * @throws NotFoundException
+     */
+    public function sendResetLinkEmail(Request $request)
+    {
+        // config(['app.locale' => $request->locale]);
+        $request->validate(['email' => 'required|email']);
 
-        $this->validateEmail($request);
-        $user =  User::whereEmail($request->email)->first();
+        $user = User::whereEmail($request->email)->first();
 
-        if(!$user){
-          throw new NotFoundException(trans('auth.user_not_found'));
+        if (!$user) {
+            throw new NotFoundException(trans('auth.user_not_found'));
         }
 
-        Mail::to($user)->send(new ResetPasswordMail);
+        $status = (new PasswordResetLinkController())->store($request);
+
+//        if( $status instanceof SuccessfulPasswordResetLinkRequestResponse){
+//          $ok = true;
+//        }
 
         return response()->json(['message' => trans('auth.email_syccessfully')]);
     }
 
-    /**
-     * Validate the email for the given request.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return void
-     */
-    protected function validateEmail(Request $request)
+    public function redirectToApp(Request $request, $token)
     {
-        // config(['app.locale' => $request->locale]);
-        $request->validate(['email' => 'required|email']);
-    }
 
-    /**
-     * Get the response for a successful password reset link.
-     *
-     * @param  \Illuminate\Http\Request $request
-     * @param  string  $response
-     * @return \Illuminate\Http\RedirectResponse
-     */
-    protected function sendResetLinkResponse(Request $request, $response)
-    {
-        return ['status' => trans($response)];
-    }
+        $validator = Validator::make($request->all(), [
+            'email' => 'email|required',
+            'redirect' => 'string|required|max:50'
+        ]);
 
-    /**
-     * Get the response for a failed password reset link.
-     *
-     * @param  \Illuminate\Http\Request $request
-     * @param  string  $response
-     * @return \Illuminate\Http\RedirectResponse
-     */
-    protected function sendResetLinkFailedResponse(Request $request, $response)
-    {
-        return response()->json(['email' => trans($response)], 400);
+        if($validator->fails() || !$token){
+            throw new \Exception('Error', 404);
+        }
+
+        return Redirect::to(config('app.frontend_url') . "/reset-verify?token=$token&".http_build_query($validator->validate()));
     }
 }

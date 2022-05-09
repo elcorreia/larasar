@@ -59,7 +59,7 @@ return [
 
     'url' => env('APP_URL', 'http://localhost'),
 
-    'frontend_url' => env('FRONTEND_URL', 'http://localhost:3000'), // breeze_api
+    'frontend_url' => env('FRONTEND_URL', 'http://localhost:8080'), // breeze_api
 
     'asset_url' => env('ASSET_URL', null),
 

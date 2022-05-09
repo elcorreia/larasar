@@ -2,6 +2,9 @@
 
 namespace App\Models;
 
+use App\Notifications\CustomResetPasswordNotification;
+use Illuminate\Auth\Notifications\ResetPassword as ResetPasswordNotification;
+use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -24,6 +27,7 @@ class User extends Authenticatable implements MustVerifyEmail
     use HasPushSubscriptions;
     // use TwoFactorAuthenticatable;
     use SoftDeletes;
+    use CanResetPassword;
 
     /**
      * The attributes that are mass assignable.
@@ -165,4 +169,15 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasMany(Favorite::class)->where('wish', 1);
     }
+
+  /**
+   * Send the password reset notification.
+   *
+   * @param  string  $token
+   * @return void
+   */
+  public function sendPasswordResetNotification($token)
+  {
+    $this->notify(new CustomResetPasswordNotification($token));
+  }
 }

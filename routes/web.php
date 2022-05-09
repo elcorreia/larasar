@@ -17,6 +17,8 @@ use Illuminate\Http\Request;
 
 if (env('JETSTREAM_FRONTEND')) { // Inertia/Livewire Demo
 
+  $break = true;
+
   Route::get('/', function () {
     $data = [
       'canLogin' => Route::has('login'),
@@ -52,6 +54,10 @@ Route::get('/email/verify', function () {
     return view('index');
 });
 
+Route::get('/reset-password/{token}',   [
+    \App\Http\Controllers\Auth\ForgotPasswordController::class, 'redirectToApp'
+])->name('password.reset');
+
 // ==================================================================================
 
 // Manifest file (optional if VAPID is used)
@@ -62,6 +68,6 @@ Route::get('/email/verify', function () {
 //   ];
 // });
 
-Route::get('{path}', function () {
-    return view('index');
-})->where('path', '.*');
+//Route::get('{path}', function () {
+//    return view('index');
+//})->where('path', '.*');

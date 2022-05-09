@@ -73,3 +73,4 @@ Route::middleware(['guest:api'])->group(function () {
     Route::post('login/{driver}', [LoginController::class, 'redirect']);
     Route::get('login/{driver}/callback', [LoginController::class, 'callback'])->name('oauth.callback');
 });
+
