@@ -74,7 +74,7 @@
 import {useStore} from 'vuex';
 import {reactive} from 'vue';
 import {useQuasar} from 'quasar';
-import {useRoute} from "vue-router";
+import {useRoute, useRouter} from "vue-router";
 
 export default {
   name: 'resetPage',
@@ -82,6 +82,7 @@ export default {
     const $store = useStore()
     const $q = useQuasar();
     const $route = useRoute();
+    const $router = useRouter()
 
     const form = reactive({
       loader: false,
@@ -101,7 +102,6 @@ export default {
       send() {
         form.loader = true
 
-
         $store.dispatch('users/passwordConfirm',
             form
         )
@@ -118,10 +118,12 @@ export default {
             form.showForm = false
             form.loader = false
 
+            $router.push({ path: '/login' })
+
 
           })
           .catch(error => {
-            const mainMessage = error.response.data?.message ?? error.response.data?.errors?.email[0];
+            const mainMessage = error.response.data?.message ?? error.response.data?.errors?.password[0];
 
             $q.notify({
               color: 'negative',

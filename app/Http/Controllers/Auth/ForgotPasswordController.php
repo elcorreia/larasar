@@ -38,9 +38,9 @@ class ForgotPasswordController extends Controller
 
         $status = (new PasswordResetLinkController())->store($request);
 
-//        if( $status instanceof SuccessfulPasswordResetLinkRequestResponse){
-//          $ok = true;
-//        }
+        if( $status instanceof SuccessfulPasswordResetLinkRequestResponse){
+          $ok = true;
+        }
 
         return response()->json(['message' => trans('auth.email_syccessfully')]);
     }
@@ -76,18 +76,6 @@ class ForgotPasswordController extends Controller
 
        $response = app(NewPasswordController::class)->store($request);
 
-        if(true){
-            throw new \Exception('erro');
-        }
-
-
-        $break = true;
-
-//        new ResetUserPassword()
-
-        throw new \Exception('Error11312132', 404);
-        $status = (new ConfirmablePasswordController())->store($request);
-
-        $aqui = true;
+       return $response->toResponse($request);
     }
 }
