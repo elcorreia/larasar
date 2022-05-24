@@ -11,6 +11,13 @@
           </q-btn>
         </q-toolbar-title>
 
+          <q-btn
+              flat round dense
+              :icon="$q.fullscreen.isActive ? 'fullscreen_exit' : 'fullscreen'"
+              @click="$q.fullscreen.toggle()"
+              class="q-ml-md"
+          />
+
         <locale-dropdown />
         <!-- <q-btn dense round icon="menu" @click="leftDrawerOpen = !leftDrawerOpen"/> -->
       </q-toolbar>
@@ -240,28 +247,28 @@
     </q-page-container>
 
     <!-- Footer -->
-    <q-footer elevated v-if="desktop">
-      <q-toolbar><!-- Desktop View -->
-        <q-toolbar-title>
-          <q-btn type="a" target="_blank" label="Suguffiè"
-            icon="fas fa-store" href="https://suguffie.com"
-          ><!-- Link To Suguffiè -->
-            <!-- <q-avatar>
-              <img src="https://cdn.quasar.dev/logo/svg/quasar-logo.svg">
-            </q-avatar> -->
-          </q-btn>
-          <q-btn icon="fas fa-bug" :label="$t('iP Debug On')" color="red" v-if="ipDebug" />
-          Quasar v{{ $q.version }}
-          Laravel v{{laravel}}
-          Vue v{{version}}
-          Desktop View
-        </q-toolbar-title>
-        <q-btn glossy unelevated to="/messages">
-            <i class="fas fa-comments fa-2x"/>
-        </q-btn>
-      </q-toolbar>
-    </q-footer>
-    <q-footer elevated v-else>
+<!--    <q-footer elevated v-if="desktop">-->
+<!--      <q-toolbar>&lt;!&ndash; Desktop View &ndash;&gt;-->
+<!--        <q-toolbar-title>-->
+<!--          <q-btn type="a" target="_blank" label="Suguffiè"-->
+<!--            icon="fas fa-store" href="https://suguffie.com"-->
+<!--          >&lt;!&ndash; Link To Suguffiè &ndash;&gt;-->
+<!--            &lt;!&ndash; <q-avatar>-->
+<!--              <img src="https://cdn.quasar.dev/logo/svg/quasar-logo.svg">-->
+<!--            </q-avatar> &ndash;&gt;-->
+<!--          </q-btn>-->
+<!--          <q-btn icon="fas fa-bug" :label="$t('iP Debug On')" color="red" v-if="ipDebug" />-->
+<!--          Quasar v{{ $q.version }}-->
+<!--          Laravel v{{laravel}}-->
+<!--          Vue v{{version}}-->
+<!--          Desktop View-->
+<!--        </q-toolbar-title>-->
+<!--        <q-btn glossy unelevated to="/messages">-->
+<!--            <i class="fas fa-comments fa-2x"/>-->
+<!--        </q-btn>-->
+<!--      </q-toolbar>-->
+<!--    </q-footer>-->
+    <q-footer elevated v-if="!desktop">
       <q-toolbar><!-- Mobile View -->
         <q-toolbar-title>
           <div class="*q-pa-md q-gutter-sm text-center">

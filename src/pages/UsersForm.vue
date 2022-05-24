@@ -14,8 +14,8 @@
 
   <div class="q-pa-md">
 
-      <!--      :style="'height:' + height + 'px'"-->
     <q-table
+      :style="'height:' + height + 'px'"
       class="my-sticky-virtscroll-table"
       ref="table"
       :title="$t('users_list')"
@@ -25,49 +25,23 @@
       virtual-scroll
       :virtual-scroll-item-size="48"
       :rows-per-page-options="[0]"
-      :filter="filter"
 
+      :filter="filter"
 
       binary-state-sort
     ><!-- @request="onRequest" :loading="loading"-->
-
-        <template v-slot:top-right class="*row">
-<!--            <q-btn icon="add_circle_outline" rounded color="primary" :disable="loading" label="Add row" @click="addRow" />-->
-<!--            <q-btn-toggle-->
-<!--                v-model="usersData"-->
-<!--                push v-if="roles.admins"-->
-<!--                glossy class="q-ma-xs col-md-3"-->
-<!--                toggle-color="primary"-->
-<!--                :options="[-->
-<!--            {label: $t('users'), value: 'users'},-->
-<!--            {label: $t('trashed'), value: 'trashed'},-->
-<!--            {label: $t('my_users'), value: 'my_users'}-->
-<!--          ]"-->
-<!--            />-->
-
-            <q-input class="q-ma-xs col-md-3"  debounce="300" v-model="filter" :placeholder="$t('search')">
-                <template v-slot:append>
-                    <q-icon name="search"  />
-                </template>
-            </q-input>
-
-            <q-btn icon="add_circle_outline"
-                   color="primary"
-                   :disable="loading"
-                   :label="$t('add_user')"
-                   v-if="roles.admins"
-                   @click="addUser = true"
-            />
-
-        </template>
-
-
 
       <template v-slot:body="props">
         <q-tr :props="props">
           <q-td key="id" :props="props">{{ props.row.id }}</q-td>
           <q-td key="user_name" :props="props">
             {{ props.row.name }}
+          </q-td>
+          <q-td key="first_name" :props="props">
+            {{ props.row.first_name }}
+          </q-td>
+          <q-td key="last_name" :props="props">
+            {{ props.row.last_name }}
           </q-td>
           <q-td key="email" :props="props">
             <div class="text-pre-wrap">{{ props.row.email }}</div>
@@ -76,25 +50,58 @@
             {{ props.row.status }}
           </q-td>
           <q-td key="role" :props="props">{{ props.row.role }}</q-td>
-
-          <template v-if="true ">
-            <q-td key="actions" :props="props">
-
-                <div class="">
-                    <div class=" q-gutter-sm" >
-<!--              <q-btn icon="fas fa-sign-in-alt" class="*q-mb-md" @click.prevent="login(props.row)"/>-->
-              <q-btn icon="edit" color="blue"   @click.prevent="Edit(props.row)"/>
-              <q-btn icon="delete" color="red"  @click.prevent="Delete(props.row)"/>
-                    </div>
-                </div>
+          <template v-if="roles.admins">
+            <q-td key="login" :props="props">
+              <q-btn icon="fas fa-sign-in-alt" rounded class="*q-mb-md" @click.prevent="login(props.row)"/>
             </q-td>
+            <template v-if="usersData=='users'||usersData=='my_users'">
+              <q-td key="edit" :props="props"><!-- TagEdit: UserModule -->
+                <q-btn icon="edit" rounded class="q-ma-md" @click.prevent="Edit(props.row)"/>
+              </q-td>
+              <q-td key="delete" :props="props">
+                <q-btn icon="delete" rounded class="*q-mb-md" @click.prevent="Delete(props.row)"/>
+              </q-td>
+            </template>
+            <template v-else>
+              <q-td key="edit" :props="props"><!-- TagRestore: UserModule -->
+                <q-btn icon="restore" rounded class="q-ma-md" @click="restore(props.row)"/>
+              </q-td>
+              <q-td key="delete" :props="props">
+                <q-btn icon="delete_forever" rounded class="*q-mb-md" @click.prevent="delete_forever(props.row)"/>
+              </q-td>
+            </template>
           </template>
         </q-tr>
       </template>
+      <template v-slot:top-right class="*row">
+        <q-btn-toggle
+          v-model="usersData"
+          push v-if="roles.admins"
+          glossy class="q-ma-xs col-md-3"
+          toggle-color="primary"
+          :options="[
+            {label: $t('users'), value: 'users'},
+            {label: $t('trashed'), value: 'trashed'},
+            {label: $t('my_users'), value: 'my_users'}
+          ]"
+        /><!-- TagPeriod: PeriodModule -->
+        <q-btn icon="add_circle_outline"
+          rounded class="q-ma-xs col-md-3"
+          :label="$t('add_user')" v-if="roles.admins"
+          @click="addUser = true"
+        /><!-- TagAdd: UserModule , role = name = first_name = last_name = email = password = password_confirmation = null-->
 
+<!--        <share :shareData="shareData" />&lt;!&ndash; TagShare: UserModule &ndash;&gt;-->
+
+        <q-input class="q-ma-xs col-md-3" borderless dense debounce="300" v-model="filter" :placeholder="$t('search')">
+          <template v-slot:append>
+            <q-icon name="search" />
+          </template>
+        </q-input>
+      </template>
 
     </q-table>
-
+    <!--============ Data Table End ====================-->
   </div>
 </template>
 
@@ -127,7 +134,6 @@ export default {
     const $store = useStore()
     const user = ref(null)
     const usersData = ref('users')
-    const inFullscreen = ref(false)
 
     const ipDebug = computed(() => $store.getters['config/ipDebugGetter'])
     const auth = computed(() => $store.getters['users/authGetter'])
@@ -160,15 +166,8 @@ export default {
       }
     } // TagDelete: UserModule
 
-    // function toggleFullscreen(){
-    //
-    // }
-
-
     return {
-    inFullscreen,
-$q,
-    ipDebug,
+      ipDebug,
       desktop: $q.platform.is.desktop,
       height: screen.height / 1.4,
       price: '0.00',
@@ -191,29 +190,31 @@ $q,
         rowsNumber: 10
       },
 
-      // login (user) {
-      //   if (auth.value) {
-      //     $store.dispatch('users/logoutAction', auth.value)
-      //     $q.cookies.set('authID', auth.value.id , {expires: '1h'})
-      //
-      //     // api.post('logout', auth.value)
-      //     setTimeout(() => {
-      //         api({
-      //           url: 'api/users',
-      //           method: 'post',
-      //           data: { log: true, userId: user.id }
-      //         }).then(() => {$store.dispatch('users/loginAction')})
-      //           .catch(e => notifyAction({error: 'logUser', e}))
-      //     }, 500)
-      //   }
-      // },
+      login (user) {
+        if (auth.value) {
+          $store.dispatch('users/logoutAction', auth.value)
+          $q.cookies.set('authID', auth.value.id , {expires: '1h'})
+
+          // api.post('logout', auth.value)
+          setTimeout(() => {
+              api({
+                url: 'api/users',
+                method: 'post',
+                data: { log: true, userId: user.id }
+              }).then(() => {$store.dispatch('users/loginAction')})
+                .catch(e => notifyAction({error: 'logUser', e}))
+          }, 500)
+        }
+      },
 
       Edit (userEdit) {
         editUser.value = true; user.value = userEdit
       }, // TagEdit: UserModule
 
       Delete, // TagDelete: UserModule
-
+      delete_forever (user) { // AddPasswordBeforeDeleteForever
+        Delete({...user, ...{forever: 1}})
+      },// TagDeleteForever: UserModule
       restore (user) {
         api.post('api/users', user).then(() => {
           onload({ usersData: 'trashed' })
@@ -221,15 +222,19 @@ $q,
       }, // TagRestore: UserModule
 
       rows: computed(() => $store.getters['users/usersGetter']),
-      columns: [
-        { name: 'id', align: 'left', label: 'ID', field: 'id', sortable: true },
-        { name: 'user_name', align: 'left', label: $t('user_name'), field: 'user_name', sortable: true },
-        { name: 'email', align: 'left', label: $t('email'), field: 'email', sortable: true },
-        { name: 'status', align: 'left', label: $t('status'), field: 'status', sortable: true },
-        { name: 'role', align: 'left', label: $t('role'), field: 'role', sortable: true },
-        { name: 'actions', align: 'center', label: $t('actions'), field: 'role', sortable: false }
-      ],
-      filter: ref('')
+      columns: [ // Users
+        { name: 'id', align: 'center', label: 'ID', field: 'id', sortable: true },
+        { name: 'user_name', align: 'center', label: $t('user_name'), field: 'user_name', sortable: true },
+        { name: 'first_name', align: 'center', label: $t('first_name'), field: 'first_name', sortable: true },
+        { name: 'last_name', align: 'center', label: $t('last_name'), field: 'last_name', sortable: true },
+        { name: 'email', align: 'center', label: $t('email'), field: 'email', sortable: true },
+        { name: 'status', align: 'center', label: $t('status'), field: 'status', sortable: true },
+        { name: 'role', align: 'center', label: $t('role'), field: 'role', sortable: true }
+        ].concat(roles.admins?[ // Admin CRUD
+        { name: 'login', align: 'center', label: $t('login'), field: 'login', sortable: false },
+        { name: 'edit', align: 'center', label: $t('edit'), field: 'edit', sortable: false },
+        { name: 'delete', align: 'center', label: $t('delete/foreve'), field: 'delete', sortable: false }
+      ]:[]), filter: ref('')
     }
   }
 }

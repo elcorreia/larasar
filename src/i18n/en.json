@@ -167,5 +167,6 @@
   "Your location is": "Your location is",
   "your_info": "Your Info",
   "your_password": "Your Password",
-  "reset_password_text_success" : "Email enviado com sucesso. Por favor, verifique sua caixa de entrada"
+  "reset_password_text_success" : "Email enviado com sucesso. Por favor, verifique sua caixa de entrada",
+  "actions" : "Actions"
 }

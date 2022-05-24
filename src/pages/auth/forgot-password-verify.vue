@@ -74,7 +74,7 @@
 import {useStore} from 'vuex';
 import {reactive} from 'vue';
 import {useQuasar} from 'quasar';
-import {useRoute, useRouter} from "vue-router";
+import {useRoute, useRouter} from 'vue-router';
 
 export default {
   name: 'resetPage',

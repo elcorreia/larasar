@@ -159,7 +159,7 @@ export default {
     const token = ref($route.query.token || $route.params.token)
 
     const $q = useQuasar();
-    $q.dark.set(true)
+    $q.dark.set(false)
 
     const formInitialState = {
       email: $route.query.email || null,

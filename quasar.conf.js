@@ -145,7 +145,8 @@ module.exports = configure(function (ctx) {
         'Meta',
         'LocalStorage',
         'SessionStorage',
-        'Loading'
+        'Loading',
+        'AppFullscreen'
       ]
     },
 
